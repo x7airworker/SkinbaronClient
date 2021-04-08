@@ -5,6 +5,7 @@ import de.x7airworker.skinbaron.response.*;
 import lombok.AllArgsConstructor;
 import org.javawebstack.abstractdata.AbstractObject;
 import org.javawebstack.httpclient.HTTPClient;
+import org.javawebstack.httpclient.HTTPRequest;
 
 @AllArgsConstructor
 public class SkinbaronAPI extends HTTPClient {
@@ -14,45 +15,50 @@ public class SkinbaronAPI extends HTTPClient {
         setBaseUrl("https://api.skinbaron.de");
     }
 
-    public ListItemsResponse listItems(ListItemsRequest request) {
-        return post("/ListItems", appendApiKey(request)).object(ListItemsResponse.class);
+    public ListItemsResponse listItems(ListItemsRequest request) throws SkinbaronAPIException {
+        return handleError(post("/ListItems", appendApiKey(request))).object(ListItemsResponse.class);
     }
 
-    public boolean editPriceMulti (EditPriceMultiRequest request) {
-        return post("/EditPriceMulti", appendApiKey(request)).status() == 200;
+    public HTTPRequest editPriceMulti(EditPriceMultiRequest request) throws SkinbaronAPIException {
+        return handleError(post("/EditPriceMulti", appendApiKey(request)));
     }
 
-    public ReturnItemsResponse returnItems (ReturnItemsRequest request) {
-        return post("/ReturnItems", appendApiKey(request)).object(ReturnItemsResponse.class);
+    public ReturnItemsResponse returnItems(ReturnItemsRequest request) throws SkinbaronAPIException {
+        return handleError(post("/ReturnItems", appendApiKey(request))).object(ReturnItemsResponse.class);
     }
 
-    public GetSalesResponse getSales(GetSalesRequest request) {
-        return post("/GetSales", appendApiKey(request)).object(GetSalesResponse.class);
+    public GetSalesResponse getSales(GetSalesRequest request) throws SkinbaronAPIException {
+        return handleError(post("/GetSales", appendApiKey(request))).object(GetSalesResponse.class);
     }
 
-    public SearchResponse search (SearchRequest request) {
-        return post("/Search", appendApiKey(request)).object(SearchResponse.class);
+    public SearchResponse search(SearchRequest request) throws SkinbaronAPIException {
+        return handleError(post("/Search", appendApiKey(request))).object(SearchResponse.class);
     }
 
-    public BuyResponse buyItems (BuyRequest request) {
-        return post("/BuyItems", appendApiKey(request)).object(BuyResponse.class);
+    public BuyResponse buyItems(BuyRequest request) throws SkinbaronAPIException {
+        return handleError(post("/BuyItems", appendApiKey(request))).object(BuyResponse.class);
     }
 
-    public boolean getInventory (GetInventoryRequest request) {
+    public HTTPRequest getInventory(GetInventoryRequest request) throws SkinbaronAPIException {
         // TODO: Update if there is more information about the response
-        return post("/GetInventory", appendApiKey(request)).status() == 200;
+        return handleError(post("/GetInventory", appendApiKey(request)));
     }
 
-    public GetBalanceResponse getBalance () {
-        return post("/GetBalance", objWithApiKey()).object(GetBalanceResponse.class);
+    public GetBalanceResponse getBalance() throws SkinbaronAPIException {
+        return handleError(post("/GetBalance", objWithApiKey())).object(GetBalanceResponse.class);
     }
 
-    public GetActiveTradeOffersResponse getActiveTradeOffers () {
-        return post("/GetActiveTradeOffers", objWithApiKey()).object(GetActiveTradeOffersResponse.class);
+    public GetActiveTradeOffersResponse getActiveTradeOffers() throws SkinbaronAPIException {
+        return handleError(post("/GetActiveTradeOffers", objWithApiKey())).object(GetActiveTradeOffersResponse.class);
     }
 
-    public boolean resendFailedTradeOffers () {
-        return post("/ResendFailedTradeOffers", objWithApiKey()).status() == 200;
+    public boolean resendFailedTradeOffers() throws SkinbaronAPIException {
+        return handleError(post("/ResendFailedTradeOffers", objWithApiKey())).status() == 200;
+    }
+
+    private HTTPRequest handleError(HTTPRequest request) throws SkinbaronAPIException {
+        if (request.status() != 200) throw new SkinbaronAPIException(request);
+        return request;
     }
 
     private AbstractObject objWithApiKey() {
@@ -61,7 +67,7 @@ public class SkinbaronAPI extends HTTPClient {
         return object;
     }
 
-    private AbstractObject appendApiKey (Object obj) {
+    private AbstractObject appendApiKey(Object obj) {
         AbstractObject object = getAbstractMapper().toAbstract(obj).object();
         object.set("apikey", apiKey);
         return object;
