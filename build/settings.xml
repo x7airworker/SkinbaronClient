@@ -5,12 +5,7 @@
 >
     <servers>
         <server>
-            <id>x7airworker-snapshots</id>
-            <username>${env.DEPLOYMENT_USERNAME}</username>
-            <password>${env.DEPLOYMENT_PASSWORD}</password>
-        </server>
-        <server>
-            <id>x7airworker-releases</id>
+            <id>x7airworker</id>
             <username>${env.DEPLOYMENT_USERNAME}</username>
             <password>${env.DEPLOYMENT_PASSWORD}</password>
         </server>
