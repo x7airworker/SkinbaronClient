@@ -7,12 +7,18 @@ import org.javawebstack.abstractdata.AbstractObject;
 import org.javawebstack.httpclient.HTTPClient;
 import org.javawebstack.httpclient.HTTPRequest;
 
+import java.util.HashMap;
+
 @AllArgsConstructor
 public class SkinbaronAPI extends HTTPClient {
     private final String apiKey;
 
     {
         setBaseUrl("https://api.skinbaron.de");
+        setDefaultHeaders(new HashMap<String, String[]>() {{
+            put("Content-Type", new String[] {"application/json"});
+            put("x-requested-with", new String[] {"XMLHttpRequest"});
+        }});
     }
 
     public ListItemsResponse listItems(ListItemsRequest request) throws SkinbaronAPIException {
