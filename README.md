@@ -9,14 +9,14 @@ Based on https://skinbaron.de/misc/apidoc/
 
 ```xml
 <repository>
-    <id>jitpack.io</id>
-    <url>https://jitpack.io</url>
+    <id>x7airworker</id>
+    <url>https://repo.jakes-co.de</url>
 </repository>
 
 <dependency>
-<groupId>com.github.x7airworker</groupId>
-<artifactId>SkinbaronAPI</artifactId>
-<version>Tag</version>
+    <groupId>de.x7airworker</groupId>
+    <artifactId>SkinbaronAPI</artifactId>
+    <version>1.0-SNAPSHOT</version>
 </dependency>
 ```
 
@@ -25,5 +25,5 @@ import de.x7airworker.skinbaron.SkinbaronAPI;
 
 SkinbaronAPI skinbaron=new SkinbaronAPI("Your api key");
 
-        System.out.println(skinbaron.getBalance());
+System.out.println(skinbaron.getBalance());
 ```
