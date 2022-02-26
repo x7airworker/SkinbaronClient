@@ -15,8 +15,8 @@ public class SearchRequest {
     private int appId;
     @SerializedName("search_item")
     private String searchItem;
-    private int min;
-    private int max;
+    private double min;
+    private double max;
     @SerializedName("after_saleid")
     private String afterSaleId;
     @SerializedName("items_per_page")
